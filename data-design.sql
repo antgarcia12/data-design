@@ -35,10 +35,10 @@ CREATE TABLE article (
 	INDEX(articleAlbumId),
 	INDEX(articleAuthorId),
 
-	FOREIGN KEY(articleAlbumId) REFERENCES album(albumId),
 	FOREIGN KEY(articleAuthorId) REFERENCES author(authorId),
+	FOREIGN KEY (articleAlbumId) REFERENCES album(albumId),
 
-	PRIMARY KEY(articleAlbumId, articleAuthorId)
+	PRIMARY KEY(articleAuthorId, articleAlbumId)
 );
 
 CREATE TABLE review (
