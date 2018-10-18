@@ -17,10 +17,27 @@ class Article {
 	 */
 	private $articleAuthorId;
 	/**
-	 *
-	 * @var
-	 */
-	private $articleContent;
-	private $articleTitle;
+	*id for the album the article talks about
+	 * @var Uuid $articleAlbumId
+	 **/
 	private $articleAlbumId;
+	/**
+	 *title of the article that was written
+	 * @var string $articleTitle
+	 **/
+	private $articleTitle;
+	/**
+	 * actual textual content of this Article
+	 * @var string $articleContent
+	 **/
+	private $articleContent;
+
+	/**
+	 * constructor for this Article
+	 *
+	 * @param Uuid $newArticleId id of this Article or null if a new Article
+	 * @param Uuid $newArticleAuthorId id of this Author or null if a new Author
+	 * @param Uuid $newArticleAlbumId id of this Album or null if a new Album
+	 *
+	 **/
 }
