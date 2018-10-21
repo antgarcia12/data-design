@@ -51,13 +51,14 @@ class Article {
 			$this->setArticleContent($newArticleContent);
 		}
 	}
+
 	/**
 	 * accessor method for article id
 	 *
 	 * @return Uuid value of tweet id
 	 **/
-	public function  getArticleId : Uuid {
-		return($this->articleId);
+	public function getArticleId : Uuid {
+		return ($this->articleId);
 
 		//this outside of class
 		//$article->getArticleId();
@@ -69,14 +70,14 @@ class Article {
 	 * @throws \RangeException if $newArticleId is not positive
 	 * @throws \TypeError if $newArticleId is not an integer
 	 **/
-	public function setArticleid( $newArticleId) : void {
+	public function setArticleid( $newArticleId): void {
 		try {
 			$uuid = self::validateUuuid($newArticleId);
 		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
-				$exceptionType = get_class($exception);
-				throw(new $exceptionType($exception->getMessage(), 0, $exception));
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
-	$this->articleId = $uuid;
+		$this->articleId = $uuid;
 	}
 
 	/**
@@ -85,12 +86,47 @@ class Article {
 	 * @return Uuid
 	 **/
 	public function getArticleAuthorId(): Uuid {
-		return($this->$articleAuthorId);
+		return $this->articleAuthorId;
 	}
 	/**
 	 *mutator method for the article author id
 	 * @param string | Uuid $newArticleAuthorId
 	 * @throws \RangeException if $newArticleAuthorId is not positive
-	 * @throws \TypeErrorif $newArticleAuthorId is not an integer
+	 * @throws \TypeError if $newArticleAuthorId is not an integer
 	 **/
+
+	public function setArticleAuthorId( $newArticleAuthorId): void {
+		try {
+			$uuid = self::validateUuid($newArticleAuthorId);
+		} catch(\InvalidArgumentException|\RangeException|\Exception|\TypeError $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exception($exception->getMessage(), 0, $exception));
+	}
+
+	// convert and store the article author id
+	$this->articleAuthorId = $uuid;
+}
+
+/**
+ * accessor method for article album id
+ *
+ * @return Uuid
+ **/
+	public function getArticleAlbumId(): Uuid {
+		return $this->articleAlbumId;
+	}
+	/**
+	 * mutator method for the article album id
+	 * @param string | Uuid $newArticleAlbumId
+	 * @throws \RangeException if $newArticleAlbumId is not positive
+	 * @throws \TypeError if $newArticleAlbumId is not an integer
+	 **/
+	public function setArticleAlbumId( $newArticleAlbumId): void {
+		try {
+			$uuid = self::validateUuid($newArticleAlbumId);
+			catch(\InvalidArgumentExceptio | \RangeException | \Exception | \TypeError $exception) {
+
+			}
+		}
+	}
 }
