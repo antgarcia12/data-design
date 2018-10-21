@@ -42,4 +42,55 @@ class Article {
 	 * @param string $newArticleContent string that contains date of Article
 	 *
 	 **/
+	public function __construct(Uuid $articleId, Uuid $articleAuthorId, Uuid $articleAlbumId, string $newArticleTitle, string $articleContent) {
+		try {
+			$this->setArticleId($newArticleId);
+			$this->setArticleAuthorId($newArticleAuthorId);
+			$this->setArticleAlbumId($newArticleAlbumId);
+			$this->articleTitle($newArticleTitle);
+			$this->setArticleContent($newArticleContent);
+		}
+	}
+	/**
+	 * accessor method for article id
+	 *
+	 * @return Uuid value of tweet id
+	 **/
+	public function  getArticleId : Uuid {
+		return($this->articleId);
+
+		//this outside of class
+		//$article->getArticleId();
+	}
+
+	/**
+	 * mutator method for article id
+	 * @param string | Uuid $newArticleId
+	 * @throws \RangeException if $newArticleId is not positive
+	 * @throws \TypeError if $newArticleId is not an integer
+	 **/
+	public function setArticleid( $newArticleId) : void {
+		try {
+			$uuid = self::validateUuuid($newArticleId);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+				$exceptionType = get_class($exception);
+				throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
+	$this->articleId = $uuid;
+	}
+
+	/**
+	 * accessor method for article author id
+	 *
+	 * @return Uuid
+	 **/
+	public function getArticleAuthorId(): Uuid {
+		return($this->$articleAuthorId);
+	}
+	/**
+	 *mutator method for the article author id
+	 * @param string | Uuid $newArticleAuthorId
+	 * @throws \RangeException if $newArticleAuthorId is not positive
+	 * @throws \TypeErrorif $newArticleAuthorId is not an integer
+	 **/
 }
