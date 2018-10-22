@@ -16,6 +16,3 @@ SELECT authorId, authorEmail, authorHash, authorName, authorTitle FROM author WH
 
 SELECT author.authorId, author.authorEmail, author.authorHash, author.authorName, author.authorTitle, article.articleId FROM author INNER JOIN article ON author.authorId = article.articleId WHERE authorId = UNHEX("9f3c8bdf180442b7b7db28d94346f05b");
 
-
-
-/*SELECT likeProfileId, likeTweetId, likeDate FROM like WHERE likeProfileId =

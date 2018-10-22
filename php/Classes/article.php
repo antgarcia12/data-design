@@ -1,11 +1,16 @@
 <?php
 namespace agarcia707\DataDesign;
 
-require_once(dirname(__DIR__, 2) . "/vendor/autoload.php");
+require_once("autoload.php");
 
+use Deepdivedylan\DataDesign\ValidateDate;
+use Deepdivedylan\DataDesign\ValidateUuid;
 use Ramsey\Uuid\Uuid;
 
-class Article {
+class Article implements \JsonSerializable {
+	use ValidateDate;
+	use ValidateUuid;
+
 	/**
 	 *id for this article
 	 * @var Uuid $articleId
@@ -40,24 +45,33 @@ class Article {
 	 * @param Uuid $newArticleAlbumId id of this Album or null if a new Album
 	 * @param string $newArticleTitle string that is the title of the article
 	 * @param string $newArticleContent string that contains date of Article
+	 * @throws \InvalidArgumentException if data types are not valid
+	 * @throws \RangeException if data values are out of bounds
+	 * @throws \TypeError if data types violate type hints
+	 * @throws \Exception if some other exception occurs
 	 *
 	 **/
-	public function __construct(Uuid $articleId, Uuid $articleAuthorId, Uuid $articleAlbumId, string $newArticleTitle, string $articleContent) {
+	public function __construct(Uuid $newArticleId, Uuid $newArticleAuthorId, Uuid $newArticleAlbumId, string $newArticleTitle, string $newArticleContent) {
 		try {
 			$this->setArticleId($newArticleId);
 			$this->setArticleAuthorId($newArticleAuthorId);
 			$this->setArticleAlbumId($newArticleAlbumId);
-			$this->articleTitle($newArticleTitle);
+			$this->setArticleTitle($newArticleTitle);
 			$this->setArticleContent($newArticleContent);
 		}
+			catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+				$exceptionType = get_class($exception);
+				throw(new$exceptionType($exception->getMessage(), 0, $exception));
+			}
 	}
+
 
 	/**
 	 * accessor method for article id
 	 *
 	 * @return Uuid value of tweet id
 	 **/
-	public function getArticleId : Uuid {
+	public function getArticleId () : Uuid {
 		return ($this->articleId);
 
 		//this outside of class
@@ -70,9 +84,9 @@ class Article {
 	 * @throws \RangeException if $newArticleId is not positive
 	 * @throws \TypeError if $newArticleId is not an integer
 	 **/
-	public function setArticleid( $newArticleId): void {
+	public function setArticleId( $newArticleId): void {
 		try {
-			$uuid = self::validateUuuid($newArticleId);
+			$uuid = self::validateUuid($newArticleId);
 		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
@@ -98,9 +112,9 @@ class Article {
 	public function setArticleAuthorId( $newArticleAuthorId): void {
 		try {
 			$uuid = self::validateUuid($newArticleAuthorId);
-		} catch(\InvalidArgumentException|\RangeException|\Exception|\TypeError $exception) {
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 			$exceptionType = get_class($exception);
-			throw(new $exception($exception->getMessage(), 0, $exception));
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 	}
 
 	// convert and store the article author id
@@ -126,7 +140,7 @@ class Article {
 			$uuid = self::validateUuid($newArticleAlbumId);
 			}catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 			$exceptionType = get_class($exception);
-			throw(new $exception($exception->getMessage(), 0, $exception));
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 	}
 
 	//convert and store the article album id
@@ -154,13 +168,13 @@ class Article {
 	 * @param string $articleTitle
 	 */
 	public function setArticleTitle(string $articleTitle): void {
-		$newArticleTitle = trim($newArticleTitle);
+		$newArticleTitle = trim($articleTitle);
 		$newArticleTitle = filter_var($newArticleTitle, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newArticleTitle) === true) {
 			throw(new \InvalidArgumentException("article title is empty or insecure"));
 		}
 
-		if(strlen($newArticleTitle) > ) {
+		if(strlen($newArticleTitle) ) {
 			throw(new \RangeException("article title too large"));
 		}
 		$this->articleTitle = $newArticleTitle;
@@ -187,12 +201,15 @@ class Article {
 	 * @param string $articleContent
 	 */
 	public function setArticleContent(string $articleContent): void {
-		$newArticleContent = trim($newAritlceContent);
+		$newArticleContent = trim($articleContent);
 		$newArticleContent = filter_var($newArticleContent, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newArticleContent) === true) {
 			throw(new \InvalidArgumentException("article content too large"));
 		}
 
 		$this->articleContent = $newArticleContent;
+	}
+	public function jsonSerialize() {
+		// TODO: Implement jsonSerialize() method.
 	}
 }
