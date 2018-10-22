@@ -29,7 +29,7 @@ CREATE TABLE article (
 	articleId BINARY(16) NOT NULL,
 	articleAlbumId BINARY(16) NOT NULL,
 	articleAuthorId BINARY(16) NOT NULL,
-	articleContent VARCHAR(256) NOT NULL,
+	articleContent VARCHAR(1040) NOT NULL,
 	articleTitle VARCHAR(256) NOT NULL,
 
 	INDEX(articleAlbumId),

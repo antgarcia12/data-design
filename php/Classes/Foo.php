@@ -124,9 +124,75 @@ class Article {
 	public function setArticleAlbumId( $newArticleAlbumId): void {
 		try {
 			$uuid = self::validateUuid($newArticleAlbumId);
-			catch(\InvalidArgumentExceptio | \RangeException | \Exception | \TypeError $exception) {
+			}catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exception($exception->getMessage(), 0, $exception));
+	}
 
-			}
+	//convert and store the article album id
+	$this->articleAlbumId = $uuid;
+}
+
+/**
+ * accessor method for the article title
+ *
+ * @return string
+ **/
+	public function getArticleTitle() : string {
+		return($this->articleTitle);
+	}
+
+	/**
+	 * mutator method for the article title
+	 * @param string $newArticleTitle
+	 * @throws\InvalidArgumentException if $newArticleTitle is not a string or insecure
+	 * @throws \RangeException if $newArticleTitle is > 256 characters
+	 * @throws \TypeError if $newArticleTitle is not a string
+	 **/
+
+	/**
+	 * @param string $articleTitle
+	 */
+	public function setArticleTitle(string $articleTitle): void {
+		$newArticleTitle = trim($newArticleTitle);
+		$newArticleTitle = filter_var($newArticleTitle, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newArticleTitle) === true) {
+			throw(new \InvalidArgumentException("article title is empty or insecure"));
 		}
+
+		if(strlen($newArticleTitle) > ) {
+			throw(new \RangeException("article title too large"));
+		}
+		$this->articleTitle = $newArticleTitle;
+	}
+	/**
+	 * accessor method for the article content
+	 * @return string value of the article content
+	 **/
+	/**
+	 * @return string
+	 */
+	public function getArticleContent(): string {
+		return $this->articleContent;
+	}
+
+	/**
+	 * mutator method for the new article content
+	 * @param string $newArticleContent
+	 * @throws \InvalidArgumentException if $newArticleContent is not a string or insecure
+	 * @throws \RangeException if $newArticleContent is > 1040 characters
+	 * @throws \TypeError if $newArticleContent is not a string
+	 **/
+	/**
+	 * @param string $articleContent
+	 */
+	public function setArticleContent(string $articleContent): void {
+		$newArticleContent = trim($newAritlceContent);
+		$newArticleContent = filter_var($newArticleContent, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newArticleContent) === true) {
+			throw(new \InvalidArgumentException("article content too large"));
+		}
+
+		$this->articleContent = $newArticleContent;
 	}
 }
