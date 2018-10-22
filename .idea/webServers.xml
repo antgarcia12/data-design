@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="2347d8b1-a606-4c93-bf30-3e5ad7c8a920" name="data-design" url="https://bootcamp-coders.cnm.edu/~agarcia707/data-design">
+        <fileTransfer host="bootcamp-coders.cnm.edu" port="22" rootFolder="/home/agarcia707/public_html/data-design" accessType="SFTP" authAgent="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" shareSSLContext="true" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
