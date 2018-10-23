@@ -1,17 +1,16 @@
 <?php
+
 namespace agarcia707\DataDesign;
 
-require_once("autoload.php");
 require_once (dirname(__DIR__, 2). "/vendor/autoload.php");
+require_once ("../Classes/Article.php");
 
-use agarcia707\DataDesign\ValidateDate;
 use agarcia707\DataDesign\ValidateUuid;
 use Ramsey\Uuid\Uuid;
 
 class Article implements \JsonSerializable {
-	use ValidateDate;
-	use ValidateUuid;
 
+	use ValidateUuid;
 	/**
 	 *id for this article
 	 * @var Uuid $articleId
