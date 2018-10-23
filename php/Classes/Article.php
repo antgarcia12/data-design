@@ -3,9 +3,8 @@
 namespace agarcia707\DataDesign;
 
 require_once (dirname(__DIR__, 2). "/vendor/autoload.php");
-require_once ("../Classes/Article.php");
+require_once ("autoload.php");
 
-use agarcia707\DataDesign\ValidateUuid;
 use Ramsey\Uuid\Uuid;
 
 class Article implements \JsonSerializable {
@@ -51,7 +50,7 @@ class Article implements \JsonSerializable {
 	 * @throws \Exception if some other exception occurs
 	 *
 	 **/
-	public function __construct(Uuid $newArticleId, Uuid $newArticleAuthorId, Uuid $newArticleAlbumId, string $newArticleTitle, string $newArticleContent) {
+	public function __construct($newArticleId, $newArticleAuthorId, $newArticleAlbumId, string $newArticleTitle, string $newArticleContent) {
 		try {
 			$this->setArticleId($newArticleId);
 			$this->setArticleAuthorId($newArticleAuthorId);
@@ -174,7 +173,7 @@ class Article implements \JsonSerializable {
 			throw(new \InvalidArgumentException("article title is empty or insecure"));
 		}
 
-		if(strlen($newArticleTitle) ) {
+		if (strlen($newArticleTitle) >= 256) {
 			throw(new \RangeException("article title too large"));
 		}
 		$this->articleTitle = $newArticleTitle;

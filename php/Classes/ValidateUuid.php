@@ -1,7 +1,6 @@
 <?php
 namespace agarcia707\DataDesign;
 
-require_once ("../Classes/Article.php");
 require_once(dirname(__DIR__, 2) . "/vendor/autoload.php");
 
 use Ramsey\Uuid\Uuid;
