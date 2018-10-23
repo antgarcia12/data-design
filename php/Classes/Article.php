@@ -4,8 +4,8 @@ namespace agarcia707\DataDesign;
 require_once("autoload.php");
 require_once (dirname(__DIR__, 2). "/vendor/autoload.php");
 
-use Deepdivedylan\DataDesign\ValidateDate;
-use Deepdivedylan\DataDesign\ValidateUuid;
+use agarcia707\DataDesign\ValidateDate;
+use agarcia707\DataDesign\ValidateUuid;
 use Ramsey\Uuid\Uuid;
 
 class Article implements \JsonSerializable {
