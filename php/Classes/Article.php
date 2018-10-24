@@ -208,10 +208,7 @@ class Article implements \JsonSerializable {
 
 		$this->articleContent = $newArticleContent;
 	}
-	public function jsonSerialize() {
-		// TODO: Implement jsonSerialize() method.
-	}
-}
+
 
 /**
  * inserts this Article into mySQL
@@ -220,6 +217,7 @@ class Article implements \JsonSerializable {
  * @throws \PDOException when mySQL related errors occur
  * @throws \TypeError if $pdo is not a PDO connection object
  **/
+
 public function insert(\PDO $pdo) : void {
 
 	// create query template
@@ -246,7 +244,7 @@ public function delete(\PDO $pdo) : void {
 	$statement = $pdo->prepare($query);
 
 	// bind the member variables to the place holder in the template
-	$parameters = ["articleId" => $this->articleid->getBytes()];
+	$parameters = ["articleId" => $this->articleId->getBytes()];
 	$statement->execute($parameters);
 }
 
@@ -274,7 +272,7 @@ public function update(\PDO $pdo) : void {
  * @throws \PDOException when mySQL related errors occur
  * @throws \TypeError when a variable are not the correct data type
  **/
-public static function getArticleByArticleId(\PDO $pdo, $ArticleId) : ?Article {
+public static function getArticleByArticleId(\PDO $pdo, $ArticleId, $articleId) : ?Article {
 	// sanitize the ArticleId before searching
 	try {
 		$ArticleId = self::validateUuid($ArticleId);
@@ -334,7 +332,7 @@ public static function getArticleByArticleAuthorId(\PDO $pdo, $articleAuthorId) 
 	while(($row = $statement->fetch()) !== false) {
 		try {
 			$articles = new Article($row["articleId"], $row["articleAuthorId"], $row["articleAlbumId"], $row["articleTitle"], $row["articleContent"]);
-			$articles[$articles->key()] = $article;
+			$articles[$articles->key()] = $articles;
 			$articles->next();
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it
@@ -378,45 +376,45 @@ public static function getArticleByArticleTitle(\PDO $pdo, string $articleTitle)
 	$statement->setFetchMode(\PDO::FETCH_ASSOC);
 	while(($row = $statement->fetch()) !== false) {
 		try {
-			$tweet = new Tweet($row["tweetId"], $row["tweetProfileId"], $row["tweetContent"], $row["tweetDate"]);
-			$tweets[$tweets->key()] = $tweet;
-			$tweets->next();
+			$article = new Article($row["articleId"], $row["articleAuthorId"], $row["articleAlbumId"], $row["articleTitle"], $row["articleContent"]);
+			$articles[$articles->key()] = $article;
+			$articles->next();
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
 	}
-	return($tweets);
+	return($articles);
 }
 
 /**
- * gets all Tweets
+ * gets all Articles
  *
  * @param \PDO $pdo PDO connection object
- * @return \SplFixedArray SplFixedArray of Tweets found or null if not found
+ * @return \SplFixedArray SplFixedArray of Articles found or null if not found
  * @throws \PDOException when mySQL related errors occur
  * @throws \TypeError when variables are not the correct data type
  **/
-public static function getAllTweets(\PDO $pdo) : \SPLFixedArray {
+public static function getAllArticles(\PDO $pdo) : \SPLFixedArray {
 	// create query template
-	$query = "SELECT tweetId, tweetProfileId, tweetContent, tweetDate FROM tweet";
+	$query = "SELECT articleId, articleAuthorId, artilceAlbumId, articleTitle, articleContent FROM article";
 	$statement = $pdo->prepare($query);
 	$statement->execute();
 
-	// build an array of tweets
-	$tweets = new \SplFixedArray($statement->rowCount());
+	// build an array of articles
+	$articles = new \SplFixedArray($statement->rowCount());
 	$statement->setFetchMode(\PDO::FETCH_ASSOC);
 	while(($row = $statement->fetch()) !== false) {
 		try {
-			$tweet = new Tweet($row["tweetId"], $row["tweetProfileId"], $row["tweetContent"], $row["tweetDate"]);
-			$tweets[$tweets->key()] = $tweet;
-			$tweets->next();
+			$article = new Article($row["ArticleId"], $row["articleAuthorId"], $row["articleAlbumId"], $row["articleTitle"], $row["articleContent"]);
+			$articles[$articles->key()] = $article;
+			$articles->next();
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
 	}
-	return ($tweets);
+	return ($articles);
 }
 
 /**
@@ -427,11 +425,11 @@ public static function getAllTweets(\PDO $pdo) : \SPLFixedArray {
 public function jsonSerialize() : array {
 	$fields = get_object_vars($this);
 
-	$fields["tweetId"] = $this->tweetId->toString();
-	$fields["tweetProfileId"] = $this->tweetProfileId->toString();
+	$fields["articleId"] = $this->articleId->toString();
+	$fields["articleAuthorId"] = $this->articleAuthorId->toString();
 
 	//format the date so that the front end can consume it
-	$fields["tweetDate"] = round(floatval($this->tweetDate->format("U.u")) * 1000);
+	$fields["articleContent"] = round(floatval($this->articleContent->format("U.u")) * 1000);
 	return($fields);
 	}
 }
